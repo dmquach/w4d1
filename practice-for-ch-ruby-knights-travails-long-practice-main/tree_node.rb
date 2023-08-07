@@ -24,9 +24,9 @@ class PolyTreeNode
         child_node.parent = nil # this automatically alters the parent AND child
     end
 
-    def inspect
-        puts "Value: #{@value} Parent: #{@parent.value} Children: #{@children}"
-    end
+    # def inspect
+    #     puts "Value: #{@value} Parent: #{@parent.value} Children: #{@children}"
+    # end
 
     def dfs(target_value)
         return self if @value == target_value

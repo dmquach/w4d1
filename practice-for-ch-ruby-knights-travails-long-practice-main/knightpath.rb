@@ -4,17 +4,17 @@ class KnightPathFinder
     def initialize(starting_pos) # [0, 0]
         @starting_pos = starting_pos
         @root_node = PolyTreeNode.new(@starting_pos)
-        #@move_tree = KnightPathFinder.build_move_tree(@root_node)
         @considered_positions = [@starting_pos]
+        @move_tree = self.build_move_tree
     end
 
-    attr_reader :root_node, :move_tree
+    attr_reader :root_node, :move_tree,
 
     def new_move_positions(pos)
-        valid_moves = KnightPathFinder.valid_moves(pos) # ex. [[0,0], [1,3]]
-        valid_moves.each { |move| valid_moves.delete(move) if @considered_positions.include?(move)}
-        valid_moves += @considered_positions
-        valid_moves # new positions
+        valid_moves = KnightPathFinder.valid_moves(pos) # ex. [[0,0]
+        valid_moves.select! { |move| !@considered_positions.include?(move) } # if not included
+        @considered_positions += valid_moves
+        valid_moves # all new positions
     end
 
     def self.valid_moves(pos) # [4, 4]
@@ -34,10 +34,39 @@ class KnightPathFinder
         true
     end
 
-=begin
-    def build_move_tree(root_node)
+    def build_move_tree
         # create children based on possible moves
+        queue = [@root_node]
+
+        while !queue.empty?
+            parent_node = queue.shift
+            # gives us next valid positions
+            val_moves = self.new_move_positions(parent_node.value)
+            # for each move, buld another node
+            val_moves.each do |move|
+                move_node = PolyTreeNode.new(move)
+                parent_node.add_child(move_node)
+                queue << move_node
+            end
+
+        end
 
     end
-=end
+
+    # def bfs(target_value)
+    #     # create local array
+    #     queue = []
+
+    #     # insert current node (self)
+    #     queue << self
+
+    #     while !queue.empty?
+    #         # check first ele of array
+    #         first_ele = queue.shift # removes first ele
+    #         return first_ele if first_ele.value == target_value
+    #         queue += first_ele.children
+    #     end
+
+    #     nil
+    # end
 end
