@@ -10,7 +10,7 @@ class KnightPathFinder
         @move_tree = self.build_move_tree
     end
 
-    attr_reader :root_node, :move_tree
+    attr_reader :root_node, :move_tree, :considered_positions
 
     def new_move_positions(pos)
         valid_moves = KnightPathFinder.valid_moves(pos) # ex. [[0,0]
