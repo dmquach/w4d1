@@ -1,5 +1,7 @@
 require_relative "tree_node.rb"
 
+require "byebug"
+
 class KnightPathFinder
     def initialize(starting_pos) # [0, 0]
         @starting_pos = starting_pos
@@ -8,7 +10,7 @@ class KnightPathFinder
         @move_tree = self.build_move_tree
     end
 
-    attr_reader :root_node, :move_tree,
+    attr_reader :root_node, :move_tree
 
     def new_move_positions(pos)
         valid_moves = KnightPathFinder.valid_moves(pos) # ex. [[0,0]
@@ -24,7 +26,7 @@ class KnightPathFinder
         new_pos += [[row - 1, col + 2], [row - 1, col - 2]]
         new_pos += [[row + 1, col + 2], [row + 1, col - 2]]
 
-        new_pos.select {|pos| self.valid?(pos)}
+        new_pos.select {|coordinate| self.valid?(coordinate)}
     end
 
     def self.valid?(pos) #[x,x]
@@ -40,9 +42,9 @@ class KnightPathFinder
 
         while !queue.empty?
             parent_node = queue.shift
-            # gives us next valid positions
+
             val_moves = self.new_move_positions(parent_node.value)
-            # for each move, buld another node
+
             val_moves.each do |move|
                 move_node = PolyTreeNode.new(move)
                 parent_node.add_child(move_node)
@@ -52,21 +54,4 @@ class KnightPathFinder
         end
 
     end
-
-    # def bfs(target_value)
-    #     # create local array
-    #     queue = []
-
-    #     # insert current node (self)
-    #     queue << self
-
-    #     while !queue.empty?
-    #         # check first ele of array
-    #         first_ele = queue.shift # removes first ele
-    #         return first_ele if first_ele.value == target_value
-    #         queue += first_ele.children
-    #     end
-
-    #     nil
-    # end
 end
