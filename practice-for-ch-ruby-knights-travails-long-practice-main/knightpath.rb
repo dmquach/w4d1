@@ -1,10 +1,10 @@
-require_relative "practice-for-ch-ruby-poly-tree-node-long-practice-main/lib/tree_node.rb"
+require_relative "tree_node.rb"
 
 class KnightPathFinder
     def initialize(starting_pos) # [0, 0]
         @starting_pos = starting_pos
         @root_node = PolyTreeNode.new(@starting_pos)
-        @move_tree = KnightPathFinder.build_move_tree(@root_node)
+        #@move_tree = KnightPathFinder.build_move_tree(@root_node)
         @considered_positions = [@starting_pos]
     end
 
@@ -21,12 +21,23 @@ class KnightPathFinder
         row, col = pos
         new_pos = [[row - 2, col + 1],[row - 2, col - 1]]
         new_pos += [[row + 2, col + 1], [row + 2, col - 1]]
-        new_pos += [[row + 1, col + 2], [row - 1, col + 2]]
-        new_pos += [[row + 1, col + 2], [row + 1, col + 2]]
+        new_pos += [[row - 1, col + 2], [row - 1, col - 2]]
+        new_pos += [[row + 1, col + 2], [row + 1, col - 2]]
+
+        new_pos.select {|pos| self.valid?(pos)}
     end
 
-    def build_move_tree(@root_node)
+    def self.valid?(pos) #[x,x]
+        row, col = pos
+        return false if row < 0 || row > 7
+        return false if col < 0 || col > 7
+        true
+    end
+
+=begin
+    def build_move_tree(root_node)
         # create children based on possible moves
 
     end
+=end
 end
